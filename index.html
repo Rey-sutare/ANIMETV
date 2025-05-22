@@ -1,0 +1,1470 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anime Explorer - Discover Amazing Anime</title>
+    <meta name="description" content="Discover and explore the best anime series and movies. Find ratings, reviews, and streaming links.">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+         :root {
+            --bg-primary: #ffffff;
+            --bg-secondary: #f8f9fa;
+            --bg-tertiary: #e9ecef;
+            --text-primary: #333333;
+            --text-secondary: #666666;
+            --text-muted: #999999;
+            --accent-color: #ff6b6b;
+            --accent-secondary: #4ecdc4;
+            --border-color: #e9ecef;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            --hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+            --gradient-primary: linear-gradient(135deg, #ff6b6b, #4ecdc4);
+            --gradient-secondary: linear-gradient(135deg, #667eea, #764ba2);
+        }
+        
+        [data-theme="dark"] {
+            --bg-primary: #1a1a1a;
+            --bg-secondary: #2d2d2d;
+            --bg-tertiary: #404040;
+            --text-primary: #ffffff;
+            --text-secondary: #cccccc;
+            --text-muted: #888888;
+            --accent-color: #ff8a8a;
+            --accent-secondary: #5fd3ca;
+            --border-color: #404040;
+            --card-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+            --hover-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            line-height: 1.6;
+            transition: all 0.3s ease;
+        }
+        /* Header Styles */
+        
+        .header {
+            background: var(--gradient-primary);
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .header-top {
+            background-color: rgba(0, 0, 0, 0.1);
+            padding: 0.5rem 0;
+            font-size: 0.9rem;
+        }
+        
+        .header-top-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .header-info {
+            display: flex;
+            gap: 2rem;
+        }
+        
+        .header-main {
+            padding: 1rem 0;
+        }
+        
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-decoration: none;
+            transition: transform 0.3s ease;
+        }
+        
+        .logo:hover {
+            transform: scale(1.05);
+        }
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+            align-items: center;
+        }
+        
+        .nav-link {
+            color: white;
+            text-decoration: none;
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .nav-link:hover,
+        .nav-link.active {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .theme-toggle {
+            background: rgba(255, 255, 255, 0.2);
+            color: white;
+            border: 2px solid rgba(255, 255, 255, 0.3);
+            padding: 0.5rem 1rem;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+            font-weight: 500;
+        }
+        
+        .theme-toggle:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: translateY(-2px);
+        }
+        /* Hero Section */
+        
+        .hero {
+            background: var(--gradient-secondary);
+            color: white;
+            padding: 4rem 0;
+            text-align: center;
+        }
+        
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 0 2rem;
+        }
+        
+        .hero h1 {
+            font-size: 3.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.9;
+        }
+        
+        .hero-stats {
+            display: flex;
+            justify-content: center;
+            gap: 3rem;
+            margin-top: 2rem;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 2.5rem;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+        /* Main Content */
+        
+        .main-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            font-weight: bold;
+            text-align: center;
+            margin-bottom: 3rem;
+            color: var(--text-primary);
+            position: relative;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 80px;
+            height: 4px;
+            background: var(--gradient-primary);
+            border-radius: 2px;
+        }
+        
+        .controls {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 3rem;
+            align-items: center;
+            background-color: var(--bg-secondary);
+            padding: 2rem;
+            border-radius: 15px;
+            box-shadow: var(--card-shadow);
+        }
+        
+        .search-input,
+        .category-filter {
+            padding: 1rem;
+            border: 2px solid var(--border-color);
+            border-radius: 10px;
+            background-color: var(--bg-primary);
+            color: var(--text-primary);
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .search-input {
+            flex: 1;
+            min-width: 300px;
+        }
+        
+        .search-input:focus,
+        .category-filter:focus {
+            outline: none;
+            border-color: var(--accent-color);
+            box-shadow: 0 0 0 3px rgba(255, 107, 107, 0.1);
+        }
+        
+        .category-filter {
+            min-width: 200px;
+        }
+        
+        .anime-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+        
+        .anime-card {
+            background-color: var(--bg-secondary);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: var(--card-shadow);
+            transition: all 0.3s ease;
+            cursor: pointer;
+            position: relative;
+        }
+        
+        .anime-card:hover {
+            transform: translateY(-8px);
+            box-shadow: var(--hover-shadow);
+        }
+        
+        .anime-image-container {
+            position: relative;
+            overflow: hidden;
+            height: 250px;
+        }
+        
+        .anime-image {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+        
+        .anime-card:hover .anime-image {
+            transform: scale(1.1);
+        }
+        
+        .anime-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(to bottom, transparent 0%, rgba(0, 0, 0, 0.7) 100%);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        
+        .anime-card:hover .anime-overlay {
+            opacity: 1;
+        }
+        
+        .anime-info {
+            padding: 2rem;
+        }
+        
+        .anime-title {
+            font-size: 1.4rem;
+            font-weight: bold;
+            color: var(--accent-color);
+            margin-bottom: 0.5rem;
+        }
+        
+        .anime-genre {
+            background: var(--gradient-primary);
+            color: white;
+            padding: 0.3rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.85rem;
+            display: inline-block;
+            margin-bottom: 1rem;
+            font-weight: 500;
+        }
+        
+        .anime-description {
+            color: var(--text-secondary);
+            margin-bottom: 1.5rem;
+            line-height: 1.6;
+            display: -webkit-box;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .anime-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+        }
+        
+        .anime-rating {
+            background-color: var(--bg-primary);
+            padding: 0.5rem 1rem;
+            border-radius: 10px;
+            font-weight: bold;
+            color: var(--accent-color);
+            border: 2px solid var(--border-color);
+        }
+        
+        .anime-year {
+            color: var(--text-secondary);
+            font-weight: 500;
+        }
+        
+        .anime-links {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .anime-link {
+            background: var(--gradient-primary);
+            color: white;
+            text-decoration: none;
+            padding: 0.6rem 1.2rem;
+            border-radius: 10px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .anime-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        /* Footer */
+        
+        .footer {
+            background: var(--bg-secondary);
+            border-top: 1px solid var(--border-color);
+            margin-top: 4rem;
+        }
+        
+        .footer-main {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 2rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+        
+        .footer-section h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+            font-size: 1.3rem;
+        }
+        
+        .footer-section p,
+        .footer-section a {
+            color: var(--text-secondary);
+            text-decoration: none;
+            line-height: 1.8;
+            transition: color 0.3s ease;
+        }
+        
+        .footer-section a:hover {
+            color: var(--accent-color);
+        }
+        
+        .footer-links {
+            list-style: none;
+        }
+        
+        .footer-links li {
+            margin-bottom: 0.5rem;
+        }
+        
+        .social-links {
+            display: flex;
+            gap: 1rem;
+            margin-top: 1rem;
+        }
+        
+        .social-link {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            background: var(--gradient-primary);
+            color: white;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+        
+        .social-link:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 4px 15px rgba(255, 107, 107, 0.3);
+        }
+        
+        .footer-bottom {
+            background-color: var(--bg-tertiary);
+            padding: 1.5rem 0;
+            text-align: center;
+            color: var(--text-secondary);
+            border-top: 1px solid var(--border-color);
+        }
+        /* Modal */
+        
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.8);
+        }
+        
+        .modal-content {
+            background-color: var(--bg-secondary);
+            margin: 3% auto;
+            padding: 2rem;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 700px;
+            position: relative;
+            max-height: 85vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.3s ease;
+        }
+        
+        @keyframes modalSlideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+        
+        .modal-close {
+            position: absolute;
+            right: 1.5rem;
+            top: 1.5rem;
+            font-size: 1.8rem;
+            cursor: pointer;
+            color: var(--text-secondary);
+            transition: color 0.3s ease;
+            width: 30px;
+            height: 30px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .modal-close:hover {
+            color: var(--accent-color);
+        }
+        
+        .modal-image {
+            width: 100%;
+            max-width: 400px;
+            height: auto;
+            border-radius: 15px;
+            margin-bottom: 1.5rem;
+        }
+        
+        .no-results {
+            text-align: center;
+            color: var(--text-secondary);
+            font-size: 1.3rem;
+            margin-top: 4rem;
+            padding: 3rem;
+            background-color: var(--bg-secondary);
+            border-radius: 15px;
+        }
+        /* Page Transitions */
+        
+        .page {
+            display: none;
+        }
+        
+        .page.active {
+            display: block;
+            animation: fadeIn 0.3s ease;
+        }
+        
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+        /* Responsive Design */
+        
+        @media (max-width: 768px) {
+            .header-top {
+                display: none;
+            }
+            .nav-container {
+                flex-direction: column;
+                gap: 1rem;
+            }
+            .nav-menu {
+                gap: 1rem;
+                flex-wrap: wrap;
+                justify-content: center;
+            }
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+            .hero p {
+                font-size: 1.1rem;
+            }
+            .hero-stats {
+                flex-direction: column;
+                gap: 1.5rem;
+            }
+            .main-container {
+                padding: 2rem 1rem;
+            }
+            .controls {
+                flex-direction: column;
+                align-items: stretch;
+                padding: 1.5rem;
+            }
+            .search-input,
+            .category-filter {
+                min-width: auto;
+            }
+            .anime-grid {
+                grid-template-columns: 1fr;
+                gap: 1.5rem;
+            }
+            .footer-main {
+                grid-template-columns: 1fr;
+                padding: 2rem 1rem;
+            }
+            .modal-content {
+                margin: 5% auto;
+                padding: 1.5rem;
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .hero h1 {
+                font-size: 2rem;
+            }
+            .anime-info {
+                padding: 1.5rem;
+            }
+            .anime-details {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 0.5rem;
+            }
+        }
+        /* Layout */
+        
+        .nav-container {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            flex-wrap: wrap;
+        }
+        
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+        }
+        /* Menu */
+        
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 1rem;
+        }
+        
+        .menu-toggle {
+            display: none;
+            font-size: 1.5rem;
+            background: none;
+            border: none;
+            cursor: pointer;
+        }
+        /* Responsive */
+        
+        @media (max-width: 768px) {
+            .menu-toggle {
+                display: block;
+            }
+            .nav-menu {
+                flex-direction: column;
+                width: 100%;
+                display: none;
+                margin-top: 1rem;
+            }
+            .nav-menu.show {
+                display: flex;
+            }
+            .nav-link {
+                padding: 0.5rem 0;
+            }
+            .theme-toggle {
+                margin-top: 1rem;
+            }
+            .logo {
+                font-size: clamp(2.5rem, 2.5vw, 4rem);
+                /* Adjusts fluidly between 1rem and 2rem */
+                font-weight: bold;
+                text-decoration: none;
+                color: inherit;
+            }
+        }
+    </style>
+</head>
+
+<header class="header">
+    <div class="header-main">
+        <nav class="nav-container">
+            <div class="nav-left">
+                <a href="#" class="logo" onclick="showPage('home')">🎌 Anime Explorer</a>
+                <button class="menu-toggle" id="menuToggle">☰</button>
+            </div>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#" class="nav-link active" onclick="showPage('home')" data-page="home">Home</a></li>
+                <li><a href="#" class="nav-link" onclick="showPage('anime')" data-page="anime">Browse Anime</a></li>
+                <li><a href="#" class="nav-link" onclick="showPage('about')" data-page="about">About</a></li>
+                <li><a href="#" class="nav-link" onclick="showPage('contact')" data-page="contact">Contact</a></li>
+            </ul>
+            <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
+        </nav>
+    </div>
+</header>
+
+<script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navMenu = document.getElementById('navMenu');
+
+    menuToggle.addEventListener('click', () => {
+        navMenu.classList.toggle('show');
+    });
+</script>
+
+<!-- Home Page -->
+<div id="homePage" class="page active">
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Discover Amazing Anime</h1>
+            <p>Explore the world's best anime series and movies with detailed information, ratings, and streaming links.</p>
+            <div class="hero-stats">
+                <div class="stat-item">
+                    <span class="stat-number">500+</span>
+                    <span class="stat-label">Anime Titles</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">10M+</span>
+                    <span class="stat-label">Happy Users</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">24/7</span>
+                    <span class="stat-label">Updated Content</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <main class="main-container">
+        <h2 class="section-title">Featured Anime</h2>
+        <div class="anime-grid" id="featuredAnime">
+            <!-- Featured anime will be populated here -->
+        </div>
+    </main>
+</div>
+
+<!-- Anime Browse Page -->
+<div id="animePage" class="page">
+    <main class="main-container">
+        <h2 class="section-title">Browse All Anime</h2>
+
+        <div class="controls">
+            <input type="text" class="search-input" id="searchInput" placeholder="🔍 Search anime titles, descriptions...">
+            <select class="category-filter" id="categoryFilter">
+                    <option value="">All Categories</option>
+                    <option value="Action">Action</option>
+                    <option value="Adventure">Adventure</option>
+                    <option value="Drama">Drama</option>
+                    <option value="Fantasy">Fantasy</option>
+                    <option value="Romance">Romance</option>
+                    <option value="Sci-Fi">Sci-Fi</option>
+                    <option value="Slice of Life">Slice of Life</option>
+                    <option value="Supernatural">Supernatural</option>
+                </select>
+        </div>
+
+        <div class="anime-grid" id="animeGrid">
+            <!-- Anime cards will be populated by JavaScript -->
+        </div>
+
+        <div class="no-results" id="noResults" style="display: none;">
+            <h3>No anime found matching your criteria.</h3>
+            <p>Try adjusting your search terms or filter options.</p>
+        </div>
+    </main>
+</div>
+
+<!-- About Page -->
+<div id="aboutPage" class="page">
+    <main class="main-container">
+        <h2 class="section-title">About Anime Explorer</h2>
+        <div class="about-wrapper">
+            <p class="about-intro">
+                Anime Explorer is your ultimate destination for discovering and exploring the fascinating world of anime. We provide comprehensive information about anime series and movies, including ratings, reviews, and direct links to streaming platforms.
+            </p>
+            <div class="about-features">
+                <div class="feature-card">
+                    <h3 class="feature-title">Our Mission</h3>
+                    <p class="feature-description">
+                        To make anime discovery easy and enjoyable for fans worldwide by providing accurate information and easy access to streaming platforms.
+                    </p>
+                </div>
+                <div class="feature-card">
+                    <h3 class="feature-title">Quality Content</h3>
+                    <p class="feature-description">
+                        All anime information is carefully curated and regularly updated to ensure accuracy and relevance for our users.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+</div>
+
+<style>
+    .about-wrapper {
+        max-width: 800px;
+        margin: 0 auto;
+        text-align: center;
+        padding: 2rem;
+    }
+    
+    .about-intro {
+        font-size: 1.2rem;
+        color: var(--text-secondary);
+        margin-bottom: 3rem;
+        line-height: 1.6;
+    }
+    
+    .about-features {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 2rem;
+        text-align: left;
+    }
+    
+    .feature-card {
+        background-color: var(--bg-secondary);
+        padding: 2rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+        transition: transform 0.3s ease;
+    }
+    
+    .feature-card:hover {
+        transform: translateY(-5px);
+    }
+    
+    .feature-title {
+        color: var(--accent-color);
+        font-size: 1.1rem;
+        margin-bottom: 1rem;
+        font-weight: 600;
+    }
+    
+    .feature-description {
+        font-size: 1rem;
+        color: var(--text-primary);
+        line-height: 1.5;
+    }
+</style>
+
+
+<!-- Contact Page -->
+<div id="contactPage" class="page">
+    <main class="main-container">
+        <h2 class="section-title">Contact Us</h2>
+        <div class="contact-wrapper">
+            <section class="contact-card">
+                <p class="contact-intro">
+                    We’d love to hear from you. Whether you have questions, suggestions, or feedback—feel free to reach out.
+                </p>
+
+                <!-- Contact Form -->
+                <form class="contact-form" action="#" method="post">
+                    <h3 class="form-heading">Send Us a Message</h3>
+                    <div class="form-group">
+                        <input type="text" name="name" placeholder="Your Name" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="email" name="email" placeholder="Your Email" required />
+                    </div>
+                    <div class="form-group">
+                        <input type="text" name="subject" placeholder="Subject" required />
+                    </div>
+                    <div class="form-group">
+                        <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-button">Send Message</button>
+                </form>
+
+                <!-- Horizontal Contact Details -->
+                <div class="contact-horizontal">
+                    <div class="contact-item">
+                        <h4 class="contact-title">Email</h4>
+                        <p class="contact-detail">contact@animeexplorer.com</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4 class="contact-title">Twitter</h4>
+                        <p class="contact-detail">@AnimeExplorer</p>
+                    </div>
+                    <div class="contact-item">
+                        <h4 class="contact-title">Discord</h4>
+                        <p class="contact-detail">AnimeExplorer#1234</p>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</div>
+
+<style>
+    .contact-wrapper {
+        max-width: 600px;
+        margin: 0 auto;
+        padding: 2rem;
+    }
+    
+    .contact-card {
+        background-color: var(--bg-secondary);
+        padding: 2.5rem;
+        border-radius: 16px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    }
+    
+    .contact-intro {
+        font-size: 1.1rem;
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+        text-align: left;
+    }
+    
+    .contact-form {
+        margin-top: 1rem;
+    }
+    
+    .form-heading {
+        font-size: 1.2rem;
+        margin-bottom: 1rem;
+        color: var(--text-primary);
+    }
+    
+    .form-group {
+        margin-bottom: 1rem;
+    }
+    
+    .form-group input,
+    .form-group textarea {
+        width: 100%;
+        padding: 0.75rem;
+        border: 1px solid #ccc;
+        border-radius: 8px;
+        background: #fff;
+        font-size: 0.95rem;
+    }
+    
+    .form-group input:focus,
+    .form-group textarea:focus {
+        outline: none;
+        border-color: var(--accent-color);
+        box-shadow: 0 0 0 2px rgba(0, 0, 0, 0.05);
+    }
+    
+    .submit-button {
+        background-color: var(--accent-color);
+        color: #fff;
+        border: none;
+        padding: 0.75rem 1.5rem;
+        font-size: 1rem;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: background-color 0.3s;
+        width: 100%;
+        margin-top: 1rem;
+    }
+    
+    .submit-button:hover {
+        background-color: #333;
+        /* fallback for darken effect */
+    }
+    
+    .contact-horizontal {
+        display: flex;
+        justify-content: space-between;
+        gap: 1rem;
+        margin-top: 2rem;
+        flex-wrap: wrap;
+        text-align: center;
+    }
+    
+    .contact-item {
+        flex: 1 1 30%;
+        padding: 0.5rem;
+        border-top: 2px solid var(--accent-color);
+    }
+    
+    .contact-title {
+        font-size: 1rem;
+        color: var(--accent-color);
+        margin-bottom: 0.2rem;
+        font-weight: 600;
+    }
+    
+    .contact-detail {
+        font-size: 0.95rem;
+        color: var(--text-primary);
+    }
+</style>
+
+
+
+
+<!-- Footer -->
+<footer class="footer">
+    <div class="footer-main">
+        <div class="footer-section">
+            <h3>Anime Explorer</h3>
+            <p>Your ultimate destination for discovering amazing anime series and movies. We provide detailed information, ratings, and streaming links to help you find your next favorite anime.</p>
+        </div>
+        <div class="footer-section">
+            <h3>Quick Links</h3>
+            <ul class="footer-links">
+                <li><a href="#homePage" onclick="showPage('home')">Home</a></li>
+                <li><a href="#animePage" onclick="showPage('anime')">Browse Anime</a></li>
+                <li><a href="#aboutPage" onclick="showPage('about')">About Us</a></li>
+                <li><a href="#contactPage" onclick="showPage('contact')">Contact</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Categories</h3>
+            <ul class="footer-links">
+                <li><a href="#">Action Anime</a></li>
+                <li><a href="#">Romance Anime</a></li>
+                <li><a href="#">Fantasy Anime</a></li>
+                <li><a href="#">Drama Anime</a></li>
+            </ul>
+        </div>
+        <div class="footer-section">
+            <h3>Support</h3>
+            <ul class="footer-links">
+                <li><a href="#">Help Center</a></li>
+                <li><a href="#">Privacy Policy</a></li>
+                <li><a href="#">Terms of Service</a></li>
+                <li><a href="#">Report Issue</a></li>
+            </ul>
+        </div>
+    </div>
+    <div class="footer-bottom">
+        <p>&copy; 2024 Anime Explorer. All rights reserved. | Made with ❤️ for anime fans worldwide</p>
+    </div>
+</footer>
+
+<!-- Modal for detailed view -->
+<div id="animeModal" class="modal">
+    <div class="modal-content">
+        <span class="modal-close" id="modalClose">&times;</span>
+        <div id="modalBody">
+            <!-- Modal content will be populated by JavaScript -->
+        </div>
+    </div>
+</div>
+
+<script>
+    // Enhanced anime database with better images
+    const animeDatabase = [{
+        id: 1,
+        title: "Attack on Titan",
+        genre: "Action",
+        year: 2013,
+        rating: 9.0,
+        description: "Humanity fights for survival against giant humanoid Titans in a walled city. As Eren Yeager and his friends join the military to fight these terrifying creatures, they uncover dark secrets about their world.",
+        image: "https://pict.sindonews.net/dyn/850/pena/news/2021/11/12/700/597685/10-karakter-utama-attack-on-titan-diukur-dari-kedewasaannya-upg.jpg",
+        featured: true,
+        links: {
+            crunchyroll: "https://www.crunchyroll.com/attack-on-titan",
+            mal: "https://myanimelist.net/anime/16498/Shingeki_no_Kyojin"
+        }
+    }, {
+        id: 2,
+        title: "Your Name",
+        genre: "Romance",
+        year: 2016,
+        rating: 8.4,
+        description: "Two teenagers share a profound, magical connection upon discovering they are swapping bodies. A beautiful story about fate, love, and the connections that bind us across time and space.",
+        image: "https://th.bing.com/th/id/OIP.E7OzBLmPUUs132InwTewfgHaGO?rs=1&pid=ImgDetMain",
+        featured: true,
+        links: {
+            funimation: "https://www.funimation.com/shows/your-name/",
+            mal: "https://myanimelist.net/anime/32281/Kimi_no_Na_wa"
+        }
+    }, {
+        id: 3,
+        title: "Demon Slayer",
+        genre: "Action",
+        year: 2019,
+        rating: 8.7,
+        description: "A young boy becomes a demon slayer to avenge his family and cure his sister. Tanjiro's journey combines breathtaking animation with emotional storytelling and incredible fight scenes.",
+        image: "https://wallpapers.com/images/file/demon-slayer-pictures-xmt7kpmtfojdfc7l.jpg",
+        featured: true,
+        links: {
+            crunchyroll: "https://www.crunchyroll.com/demon-slayer-kimetsu-no-yaiba",
+            mal: "https://myanimelist.net/anime/38000/Kimetsu_no_Yaiba"
+        }
+    }, {
+        id: 4,
+        title: "Spirited Away",
+        genre: "Fantasy",
+        year: 2001,
+        rating: 9.3,
+        description: "A young girl enters a world ruled by gods and witches where humans are transformed into beasts. Studio Ghibli's masterpiece about courage, friendship, and growing up.",
+        image: "https://th.bing.com/th/id/OIP.uK0O7q8JA30sKMuwOrAsdQHaLN?rs=1&pid=ImgDetMain",
+        featured: true,
+        links: {
+            netflix: "https://www.netflix.com/title/60023642",
+            mal: "https://myanimelist.net/anime/199/Sen_to_Chihiro_no_Kamikakushi"
+        }
+    }, {
+        id: 5,
+        title: "My Hero Academia",
+        genre: "Action",
+        year: 2016,
+        rating: 8.5,
+        description: "In a world where most people have superpowers, a powerless boy enrolls in a superhero academy. Follow Deku's journey to become the greatest hero while learning what it truly means to be heroic.",
+        image: "https://th.bing.com/th/id/OIP.nHOmUMfo1TC57pubT4h2DgHaFZ?rs=1&pid=ImgDetMain",
+        featured: false,
+        links: {
+            crunchyroll: "https://www.crunchyroll.com/my-hero-academia",
+            mal: "https://myanimelist.net/anime/31964/Boku_no_Hero_Academia"
+        }
+    }, {
+        id: 6,
+        title: "Death Note",
+        genre: "Supernatural",
+        year: 2006,
+        rating: 9.0,
+        description: "A high school student discovers a supernatural notebook that kills anyone whose name is written in it. A psychological thriller about justice, morality, and the corruption of power.",
+        image: "https://th.bing.com/th/id/OIP.d210Z89-dsPIBLv35KOVrQHaEK?rs=1&pid=ImgDetMain",
+        featured: true,
+        links: {
+            netflix: "https://www.netflix.com/title/70204970",
+            mal: "https://myanimelist.net/anime/1535/Death_Note"
+        }
+    }, {
+        id: 7,
+        title: "One Piece",
+        genre: "Adventure",
+        year: 1999,
+        rating: 9.1,
+        description: "A young pirate searches for the ultimate treasure known as One Piece to become the Pirate King. Join Luffy and his Straw Hat crew on the greatest adventure ever told.",
+        image: "https://www.pixelstalk.net/wp-content/uploads/2016/08/HD-One-Piece-Iphone-Image.jpg",
+        featured: true,
+        links: {
+            crunchyroll: "https://www.crunchyroll.com/one-piece",
+            mal: "https://myanimelist.net/anime/21/One_Piece"
+        }
+    }, {
+        id: 8,
+        title: "A Silent Voice",
+        genre: "Drama",
+        year: 2016,
+        rating: 8.2,
+        description: "A former bully seeks redemption by reconnecting with a deaf girl he tormented in elementary school. A powerful story about bullying, forgiveness, and second chances.",
+        image: "https://wallpaperaccess.com/full/5000968.jpg",
+        featured: false,
+        links: {
+            netflix: "https://www.netflix.com/title/80223093",
+            mal: "https://myanimelist.net/anime/28851/Koe_no_Katachi"
+        }
+    }, {
+        id: 9,
+        title: "Akira",
+        genre: "Sci-Fi",
+        year: 1988,
+        rating: 8.0,
+        description: "In a dystopian 2019, a biker gang member gains psychic powers and must face a military conspiracy. A groundbreaking cyberpunk anime that influenced countless works.",
+        image: "https://wallpaperaccess.com/full/257079.jpg",
+        featured: false,
+        links: {
+            funimation: "https://www.funimation.com/shows/akira/",
+            mal: "https://myanimelist.net/anime/47/Akira"
+        }
+    }, {
+        id: 10,
+        title: "K-On!",
+        genre: "Slice of Life",
+        year: 2009,
+        rating: 7.8,
+        description: "Four high school girls form a light music club and learn to play instruments together. A heartwarming slice-of-life anime about friendship, music, and the simple joys of youth.",
+        image: "https://images3.alphacoders.com/127/127917.jpg",
+        featured: false,
+        links: {
+            crunchyroll: "https://www.crunchyroll.com/k-on",
+            mal: "https://myanimelist.net/anime/5680/K-On"
+        }
+    }, {
+        id: 11,
+        title: "Naruto",
+        genre: "Action",
+        year: 2002,
+        rating: 8.4,
+        description: "A young ninja with a nine-tailed fox sealed within him dreams of becoming the strongest ninja and leader of his village. An epic tale of friendship, determination, and never giving up.",
+        image: "https://th.bing.com/th/id/OIP._GLMgIVvqwCiuJB4b2N7-gHaKS?w=1600&h=2222&rs=1&pid=ImgDetMain",
+        featured: false,
+        links: {
+            crunchyroll: "https://www.crunchyroll.com/naruto",
+            mal: "https://myanimelist.net/anime/20/Naruto"
+        }
+    }, {
+        id: 12,
+        title: "Princess Mononoke",
+        genre: "Fantasy",
+        year: 1997,
+        rating: 8.4,
+        description: "A young warrior gets involved in a struggle between forest gods and humans consuming natural resources. Miyazaki's environmental masterpiece about balance and coexistence.",
+        image: "https://m.media-amazon.com/images/M/MV5BNTZkYmI0MmEtNGFlZC00OWZjLWFjMmItMjk1OWZkOWJiZGVjXkEyXkFqcGdeQXVyMTMxODk2OTU@._V1_.jpg",
+        featured: false,
+        links: {
+            netflix: "https://www.netflix.com/title/28630857",
+            mal: "https://myanimelist.net/anime/164/Mononoke_Hime"
+        }
+    }, {
+        id: 13,
+        title: "Jujutsu Kaisen",
+        genre: "Action",
+        year: 2020,
+        rating: 8.6,
+        description: "A high school student joins a secret organization of Jujutsu Sorcerers to eliminate powerful curses. Modern supernatural action with incredible animation and compelling characters.",
+        image: "https://static0.gamerantimages.com/wordpress/wp-content/uploads/2023/09/jujutsu-kaisen.jpg",
+        featured: false,
+        links: {
+            crunchyroll: "https://www.crunchyroll.com/jujutsu-kaisen",
+            mal: "https://myanimelist.net/anime/40748/Jujutsu_Kaisen"
+        }
+    }, {
+        id: 14,
+        title: "Weathering with You",
+        genre: "Romance",
+        year: 2019,
+        rating: 8.0,
+        description: "A high school boy meets a girl who can manipulate the weather. A visually stunning film about love, sacrifice, and the power of human connection.",
+        image: "https://images6.alphacoders.com/102/thumb-1920-1021972.jpg",
+        featured: false,
+        links: {
+            funimation: "https://www.funimation.com/shows/weathering-with-you/",
+            mal: "https://myanimelist.net/anime/38826/Tenki_no_Ko"
+        }
+    }, {
+        id: 15,
+        title: "Mob Psycho 100",
+        genre: "Supernatural",
+        year: 2016,
+        rating: 8.8,
+        description: "A powerful psychic middle schooler tries to live a normal life while dealing with his incredible abilities. A unique blend of comedy, action, and personal growth.",
+        image: "https://i.pinimg.com/originals/c5/fd/bf/c5fdbf104abda0963bf50c734633f908.jpg",
+        featured: false,
+        links: {
+            crunchyroll: "https://www.crunchyroll.com/mob-psycho-100",
+            mal: "https://myanimelist.net/anime/32182/Mob_Psycho_100"
+        }
+    }];
+
+    // DOM elements
+    const searchInput = document.getElementById('searchInput');
+    const categoryFilter = document.getElementById('categoryFilter');
+    const animeGrid = document.getElementById('animeGrid');
+    const featuredAnime = document.getElementById('featuredAnime');
+    const noResults = document.getElementById('noResults');
+    const themeToggle = document.getElementById('themeToggle');
+    const modal = document.getElementById('animeModal');
+    const modalClose = document.getElementById('modalClose');
+    const modalBody = document.getElementById('modalBody');
+
+    // Current filtered anime
+    let filteredAnime = [...animeDatabase];
+    let currentPage = 'home';
+
+    // Page management
+    function showPage(pageName) {
+        // Hide all pages
+        document.querySelectorAll('.page').forEach(page => {
+            page.classList.remove('active');
+        });
+
+        // Show selected page
+        document.getElementById(pageName + 'Page').classList.add('active');
+
+        // Update navigation
+        document.querySelectorAll('.nav-link').forEach(link => {
+            link.classList.remove('active');
+        });
+        document.querySelector(`[data-page="${pageName}"]`).classList.add('active');
+
+        currentPage = pageName;
+
+        // Load content based on page
+        if (pageName === 'home') {
+            renderFeaturedAnime();
+        } else if (pageName === 'anime') {
+            renderAnime(filteredAnime);
+        }
+    }
+
+    // Theme management
+    function initTheme() {
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+        updateThemeToggle(savedTheme);
+    }
+
+    function toggleTheme() {
+        const currentTheme = document.documentElement.getAttribute('data-theme');
+        const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+        document.documentElement.setAttribute('data-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeToggle(newTheme);
+    }
+
+    function updateThemeToggle(theme) {
+        themeToggle.textContent = theme === 'dark' ? '☀️ Light Mode' : '🌙 Dark Mode';
+    }
+
+    // Render featured anime for home page
+    function renderFeaturedAnime() {
+        const featured = animeDatabase.filter(anime => anime.featured).slice(0, 6);
+
+        featuredAnime.innerHTML = featured.map(anime => `
+                <div class="anime-card" onclick="showAnimeDetails(${anime.id})">
+                    <div class="anime-image-container">
+                        <img src="${anime.image}" alt="${anime.title}" class="anime-image">
+                        <div class="anime-overlay"></div>
+                    </div>
+                    <div class="anime-info">
+                        <h3 class="anime-title">${anime.title}</h3>
+                        <span class="anime-genre">${anime.genre}</span>
+                        <p class="anime-description">${anime.description}</p>
+                        <div class="anime-details">
+                            <span class="anime-rating">⭐ ${anime.rating}</span>
+                            <span class="anime-year">${anime.year}</span>
+                        </div>
+                        <div class="anime-links">
+                            ${Object.entries(anime.links).map(([platform, url]) => 
+                                `<a href="${url}" class="anime-link" target="_blank" onclick="event.stopPropagation()">${platform.charAt(0).toUpperCase() + platform.slice(1)}</a>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Render anime cards
+        function renderAnime(animeList) {
+            if (animeList.length === 0) {
+                animeGrid.style.display = 'none';
+                noResults.style.display = 'block';
+                return;
+            }
+
+            animeGrid.style.display = 'grid';
+            noResults.style.display = 'none';
+
+            animeGrid.innerHTML = animeList.map(anime => `
+                <div class="anime-card" onclick="showAnimeDetails(${anime.id})">
+                    <div class="anime-image-container">
+                        <img src="${anime.image}" alt="${anime.title}" class="anime-image">
+                        <div class="anime-overlay"></div>
+                    </div>
+                    <div class="anime-info">
+                        <h3 class="anime-title">${anime.title}</h3>
+                        <span class="anime-genre">${anime.genre}</span>
+                        <p class="anime-description">${anime.description}</p>
+                        <div class="anime-details">
+                            <span class="anime-rating">⭐ ${anime.rating}</span>
+                            <span class="anime-year">${anime.year}</span>
+                        </div>
+                        <div class="anime-links">
+                            ${Object.entries(anime.links).map(([platform, url]) => 
+                                `<a href="${url}" class="anime-link" target="_blank" onclick="event.stopPropagation()">${platform.charAt(0).toUpperCase() + platform.slice(1)}</a>`
+                            ).join('')}
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        // Show anime details in modal
+        function showAnimeDetails(animeId) {
+            const anime = animeDatabase.find(a => a.id === animeId);
+            if (!anime) return;
+
+            modalBody.innerHTML = `
+                <img src="${anime.image}" alt="${anime.title}" class="modal-image">
+                <h2 class="anime-title" style="font-size: 2rem; margin-bottom: 1rem;">${anime.title}</h2>
+                <span class="anime-genre" style="margin-bottom: 1rem; display: inline-block;">${anime.genre}</span>
+                <div class="anime-details" style="margin: 1.5rem 0; justify-content: flex-start; gap: 2rem;">
+                    <span class="anime-rating">⭐ ${anime.rating}/10</span>
+                    <span class="anime-year">📅 Released: ${anime.year}</span>
+                </div>
+                <p class="anime-description" style="margin-bottom: 2rem; font-size: 1.1rem; line-height: 1.7;">${anime.description}</p>
+                <h4 style="color: var(--accent-color); margin-bottom: 1rem;">Watch Now:</h4>
+                <div class="anime-links">
+                    ${Object.entries(anime.links).map(([platform, url]) => 
+                        `<a href="${url}" class="anime-link" target="_blank">${platform.charAt(0).toUpperCase() + platform.slice(1)}</a>`
+                    ).join('')}
+                </div>
+            `;
+            modal.style.display = 'block';
+            document.body.style.overflow = 'hidden';
+        }
+
+        // Filter anime based on search and category
+        function filterAnime() {
+            const searchTerm = searchInput.value.toLowerCase().trim();
+            const selectedCategory = categoryFilter.value;
+
+            filteredAnime = animeDatabase.filter(anime => {
+                const matchesSearch = anime.title.toLowerCase().includes(searchTerm) || 
+                                    anime.description.toLowerCase().includes(searchTerm) ||
+                                    anime.genre.toLowerCase().includes(searchTerm);
+                const matchesCategory = !selectedCategory || anime.genre === selectedCategory;
+                return matchesSearch && matchesCategory;
+            });
+
+            renderAnime(filteredAnime);
+        }
+
+        // Event listeners
+        themeToggle.addEventListener('click', toggleTheme);
+        if (searchInput) searchInput.addEventListener('input', filterAnime);
+        if (categoryFilter) categoryFilter.addEventListener('change', filterAnime);
+
+        // Modal event listeners
+        modalClose.addEventListener('click', () => {
+            modal.style.display = 'none';
+            document.body.style.overflow = 'auto';
+        });
+
+        window.addEventListener('click', (event) => {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.style.display === 'block') {
+                modal.style.display = 'none';
+                document.body.style.overflow = 'auto';
+            }
+        });
+
+        // Smooth scrolling for navigation
+        document.addEventListener('click', (e) => {
+            if (e.target.matches('a[href^="#"]')) {
+                e.preventDefault();
+                const target = document.querySelector(e.target.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({ behavior: 'smooth' });
+                }
+            }
+        });
+
+        // Initialize the app
+        document.addEventListener('DOMContentLoaded', () => {
+            initTheme();
+            renderFeaturedAnime();
+            
+            // Add some loading animation
+            setTimeout(() => {
+                document.body.style.opacity = '1';
+            }, 100);
+        });
+
+        // Add loading state
+        document.body.style.opacity = '0.9';
+        document.body.style.transition = 'opacity 0.3s ease';
+</script>
+</body>
+
+</html>
