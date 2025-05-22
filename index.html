@@ -100,7 +100,7 @@
             display: flex;
             align-items: center;
             gap: 0.5rem;
-            font-size: 2rem;
+            font-size: clamp(1rem, 2.5vw, 2rem);
             font-weight: bold;
             color: white;
             text-decoration: none;
@@ -152,36 +152,32 @@
         /* Hero Section */
         
         .hero {
-            background: var(--gradient-secondary);
+            background-image: url('https://preview.redd.it/ddt9m7jsnka71.jpg?auto=webp&s=a6b2c717bf811bdb79fa512933f3c4974211fff2');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
             color: white;
             padding: 4rem 0;
             text-align: center;
+            position: relative;
+        }
+        /* Optional: Add a dark overlay for better text readability */
+        
+        .hero::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 0;
         }
         
         .hero-content {
-            max-width: 800px;
-            margin: 0 auto;
-            padding: 0 2rem;
-        }
-        
-        .hero h1 {
-            font-size: 3.5rem;
-            font-weight: bold;
-            margin-bottom: 1rem;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        
-        .hero p {
-            font-size: 1.3rem;
-            margin-bottom: 2rem;
-            opacity: 0.9;
-        }
-        
-        .hero-stats {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-top: 2rem;
+            position: relative;
+            z-index: 1;
+            /* Make sure content is above the overlay */
         }
         
         .stat-item {
@@ -676,7 +672,7 @@
                 margin-top: 1rem;
             }
             .logo {
-                font-size: clamp(2.5rem, 2.5vw, 4rem);
+                font-size: clamp(1.5rem, 2.5vw, 2.5rem);
                 /* Adjusts fluidly between 1rem and 2rem */
                 font-weight: bold;
                 text-decoration: none;
@@ -698,20 +694,40 @@
                 <li><a href="#" class="nav-link" onclick="showPage('anime')" data-page="anime">Browse Anime</a></li>
                 <li><a href="#" class="nav-link" onclick="showPage('about')" data-page="about">About</a></li>
                 <li><a href="#" class="nav-link" onclick="showPage('contact')" data-page="contact">Contact</a></li>
+                <li><button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button></li>
             </ul>
-            <button class="theme-toggle" id="themeToggle">🌙 Dark Mode</button>
         </nav>
     </div>
 </header>
+
 
 <script>
     const menuToggle = document.getElementById('menuToggle');
     const navMenu = document.getElementById('navMenu');
 
+    // Toggle the nav menu
     menuToggle.addEventListener('click', () => {
         navMenu.classList.toggle('show');
     });
+
+    // Toggle theme (Dark / Light Mode)
+    themeToggle.addEventListener('click', () => {
+        document.body.classList.toggle('dark-mode');
+        themeToggle.textContent = document.body.classList.contains('dark-mode') ? '☀️ Light Mode' : '🌙 Dark Mode';
+
+        // Auto-close nav menu on mobile after clicking theme toggle
+        navMenu.classList.remove('show');
+    });
+
+    // Auto-close nav when clicking any nav link
+    const navLinks = navMenu.querySelectorAll('a');
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('show');
+        });
+    });
 </script>
+
 
 <!-- Home Page -->
 <div id="homePage" class="page active">
@@ -774,6 +790,7 @@
         </div>
     </main>
 </div>
+
 
 <!-- About Page -->
 <div id="aboutPage" class="page">
@@ -861,7 +878,7 @@
                 </p>
 
                 <!-- Contact Form -->
-                <form class="contact-form" action="#" method="post">
+                <form class="contact-form" id="contactForm" action="#" method="post">
                     <h3 class="form-heading">Send Us a Message</h3>
                     <div class="form-group">
                         <input type="text" name="name" placeholder="Your Name" required />
@@ -876,6 +893,7 @@
                         <textarea name="message" rows="5" placeholder="Your Message" required></textarea>
                     </div>
                     <button type="submit" class="submit-button">Send Message</button>
+                    <p id="formNotification" style="display:none; color: green; margin-top: 1rem;"></p>
                 </form>
 
                 <!-- Horizontal Contact Details -->
@@ -897,6 +915,56 @@
         </div>
     </main>
 </div>
+
+<script>
+    const contactForm = document.getElementById('contactForm');
+    const formNotification = document.getElementById('formNotification');
+
+    contactForm.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent page reload
+
+        // Here you could add your form submission logic (e.g., AJAX request)
+
+        popupNotification.style.display = 'block';
+        // Trigger fade-in by changing opacity
+        setTimeout(() => {
+            popupNotification.style.opacity = '1';
+        }, 10);
+        ay = 'block';
+
+        // Optionally clear the form fields
+        contactForm.reset();
+
+        // Hide notification after 5 seconds
+        setTimeout(() => {
+            popupNotification.style.opacity = '0';
+            // After fade out, hide the div completely
+            setTimeout(() => {
+                popupNotification.style.display = 'none';
+            }, 500);
+        }, 3000);
+    });
+</script>
+
+<div id="popupNotification" style="
+    display: none;
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #13e21d86; /* green */
+    color: white;
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+    font-weight: 600;
+    z-index: 1000;
+    opacity: 0;
+    transition: opacity 0.5s ease;
+">
+    Thank you! Your message has been sent.
+</div>
+
 
 <style>
     .contact-wrapper {
@@ -997,7 +1065,37 @@
     }
 </style>
 
+<!-- Help Center Page -->
+<div id="help" class="page">
+    <main class="main-container">
+        <h2 class="section-title">Help Center</h2>
+        <p>Here you'll find answers to common questions and guidance for using Anime Explorer.</p>
+    </main>
+</div>
 
+<!-- Privacy Policy Page -->
+<div id="privacy" class="page">
+    <main class="main-container">
+        <h2 class="section-title">Privacy Policy</h2>
+        <p>We value your privacy. Learn more about how we handle and protect your information.</p>
+    </main>
+</div>
+
+<!-- Terms of Service Page -->
+<div id="terms" class="page">
+    <main class="main-container">
+        <h2 class="section-title">Terms of Service</h2>
+        <p>Read the terms and conditions that apply to using Anime Explorer.</p>
+    </main>
+</div>
+
+<!-- Report Issue Page -->
+<div id="report" class="page">
+    <main class="main-container">
+        <h2 class="section-title">Report an Issue</h2>
+        <p>If you encounter any problems or bugs, please let us know here.</p>
+    </main>
+</div>
 
 
 <!-- Footer -->
@@ -1036,9 +1134,11 @@
         </div>
     </div>
     <div class="footer-bottom">
-        <p>&copy; 2024 Anime Explorer. All rights reserved. | Made with ❤️ for anime fans worldwide</p>
+        <p>&copy; 2025 Anime Explorer. All rights reserved. | Made with ❤️ for anime fans worldwide</p>
     </div>
 </footer>
+
+
 
 <!-- Modal for detailed view -->
 <div id="animeModal" class="modal">
